@@ -1,0 +1,36 @@
+{{ template "chart.header" . }}
+
+A Helm chart to deploy a [Bluesky PDS](https://github.com/bluesky-social/pds) on Kubernetes.
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Installing the Chart
+
+```bash
+helm repo add bear https://charts.bear.fyi
+helm repo update
+helm install bluesky-pds bear/bluesky-pds -f values.yaml
+```
+
+## Bluesky PDS configuration and account creation
+
+Regarding configuration and account creation, refer to the [official PDS docs](https://github.com/bluesky-social/pds/blob/main/README.md).
+
+### Generate invite code via API POST request to your PDS
+
+```bash
+export ADMINPW=your-admin-pw
+export PDS_HOSTNAME=pds.example.com
+curl --request POST --header "Content-Type: application/json" \
+    --user "admin:${ADMINPW}" \
+    --data '{"useCount": 1}' \
+    "https://${PDS_HOSTNAME}/xrpc/com.atproto.server.createInviteCode"
+```
+
+Create your account (if necessary) and login with https://bsky.app/ using your PDS and the Invite Code you generated.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}
