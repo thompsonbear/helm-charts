@@ -3,9 +3,9 @@
 
 A Helm chart to deploy a [Bluesky PDS](https://github.com/bluesky-social/pds) on Kubernetes.
 
-![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.74](https://img.shields.io/badge/AppVersion-0.4.74-informational?style=flat-square) 
+![Version: 0.1.7](https://img.shields.io/badge/Version-0.1.7-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.74](https://img.shields.io/badge/AppVersion-0.4.74-informational?style=flat-square) 
 
-## Installing the Chart
+## Installing
 
 ```bash
 helm repo add bear https://charts.bear.fyi
@@ -13,22 +13,55 @@ helm repo update
 helm install bluesky-pds bear/bluesky-pds -f values.yaml
 ```
 
-## Bluesky PDS configuration and account creation
+Alternatively specify necessary values inline:
+```bash
+helm install bluesky-pds bear/bluesky-pds \
+--set pds.config.hostname=pds.example.com \
+--set pds.config.emailFromAddress=pds@example.com \
+--set pds.config.secrets.emailSmtpUrl=smtps://username:password@smtp.example.com:465/
+```
 
-Regarding configuration and account creation, refer to the [official PDS docs](https://github.com/bluesky-social/pds/blob/main/README.md).
+## Bluesky PDS Account Creation (Post Install)
+
+Also refer to the [official PDS docs](https://github.com/bluesky-social/pds/blob/main/README.md).
 
 ### Generate invite code via API POST request to your PDS
 
+0. If you didn't specify your admin password during install, you can print the generated one with the following command (assumes your secret is named the default **bluesky-pds-secret**):
 ```bash
-export ADMINPW=your-admin-pw
+kubectl get secret bluesky-pds-secret --template={{.data.adminPassword}} | base64 --decode
+```
+
+1. Generate invite code
+```bash
 export PDS_HOSTNAME=pds.example.com
+
 curl --request POST --header "Content-Type: application/json" \
-    --user "admin:${ADMINPW}" \
+    --user "admin:<YOUR-ADMIN-PASSWORD>" \
     --data '{"useCount": 1}' \
     "https://${PDS_HOSTNAME}/xrpc/com.atproto.server.createInviteCode"
 ```
 
-Create your account (if necessary) and login with https://bsky.app/ using your PDS and the Invite Code you generated.
+### Create your account
+
+A. Create you account in the Bluesky UI
+    1. Go to https://bsky.app/
+    2. On the first step of the account creation screen, specify the PDS hostname (By default, this is set to "Bluesky Social", which needs to be changed)
+    3. Input your invite code generated along with the new account information
+
+B. Alternatively, create an account via API request
+```bash
+export PDS_HOSTNAME=pds.example.com
+
+curl --request POST --header "Content-Type: application/json" \
+--data '{
+    "email":"<YOUR-ACCOUNT-EMAIL-ADDRESS>",
+    "handle":"<YOUR-HANDLE eg. handle.pds.example.com>",
+    "password":"<YOUR-ACCOUNT-PASSWORD>",
+    "inviteCode":"<INVITE-CODE>"
+    }' \
+"https://${PDS_HOSTNAME}/xrpc/com.atproto.server.createAccount"
+```
 
 
 
