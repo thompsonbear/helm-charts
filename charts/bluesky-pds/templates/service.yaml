@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: {{ include "bluesky-pds.fullname" . }}
-  labels: {{ - include "bluesky-pds.labels" . | nindent 4 }}
+  labels: {{- include "bluesky-pds.labels" . | nindent 4 }}
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -10,4 +10,4 @@ spec:
       targetPort: pds-port
       protocol: TCP
       name: pds-port
-  selector: {{ - include "bluesky-pds.selectorLabels" . | nindent 4 }}
+  selector: {{- include "bluesky-pds.selectorLabels" . | nindent 4 }}
