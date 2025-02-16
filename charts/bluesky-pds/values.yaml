@@ -17,8 +17,14 @@ pds:
   config:
     hostname: "pds.example.com"
     secrets:
-      # Sendgrid - echo -n 'smtps://apikey:<SENDGRID_API_KEY>@smtp.sendgrid.net:465/' | base64
-      # Resend - echo -n 'smtps://resend:<RESEND_API_KEY>@smtp.resend.com:465/' | base64
+
+      # Generated if not set
+      jwtSecret: "" # randAlphaNum 16
+      plcRotationKey: "" # 64-byte ECDSA Hex
+      adminPassword: "" # randAlphaNum 16
+
+      # Sendgrid - 'smtps://apikey:<SENDGRID_API_KEY>@smtp.sendgrid.net:465/'
+      # Resend - 'smtps://resend:<RESEND_API_KEY>@smtp.resend.com:465/'
       emailSmtpUrl: ""
 
       ## Set the value for existingSecret to use a pre-created secret for jwtSecret, adminPassword, plcRotationKey, and emailSmtpUrl
@@ -35,7 +41,7 @@ pds:
   dataStorage:
     size: 20Gi
     mountPath: "/pds"
-    storageClass: null
+    storageClass: ""
 
 # This is for the secretes for pulling an image from a private repository more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/pull-image-private-registry/
 imagePullSecrets: []

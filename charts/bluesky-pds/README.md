@@ -3,7 +3,7 @@
 
 A Helm chart to deploy a [Bluesky PDS](https://github.com/bluesky-social/pds) on Kubernetes.
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.74](https://img.shields.io/badge/AppVersion-0.4.74-informational?style=flat-square) 
+![Version: 0.1.6](https://img.shields.io/badge/Version-0.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.74](https://img.shields.io/badge/AppVersion-0.4.74-informational?style=flat-square) 
 
 ## Installing the Chart
 
@@ -61,10 +61,13 @@ Create your account (if necessary) and login with https://bsky.app/ using your P
 | pds.config.hostname | string | `"pds.example.com"` |  |
 | pds.config.reportSvcDid | string | `"did:plc:ar7c4by46qjdydhdevvrndac"` |  |
 | pds.config.reportSvcUrl | string | `"https://mod.bsky.app"` |  |
+| pds.config.secrets.adminPassword | string | `""` |  |
 | pds.config.secrets.emailSmtpUrl | string | `""` |  |
+| pds.config.secrets.jwtSecret | string | `""` |  |
+| pds.config.secrets.plcRotationKey | string | `""` |  |
 | pds.dataStorage.mountPath | string | `"/pds"` |  |
 | pds.dataStorage.size | string | `"20Gi"` |  |
-| pds.dataStorage.storageClass | string | `nil` |  |
+| pds.dataStorage.storageClass | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
