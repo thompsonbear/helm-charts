@@ -35,7 +35,7 @@ curl --request POST --header "Content-Type: application/json" \
     "https://${PDS_HOSTNAME}/xrpc/com.atproto.server.createInviteCode"
 ```
 
-Note: If you didn't specify your admin password during install, you can print the generated one with the following command (assumes your secret is named the default **bluesky-pds-secret**):
+Note: If you didn't specify your admin password during install, you can print the generated one with the following command:
 ```bash
 kubectl get secret bluesky-pds-secret --template={{.data.adminPassword}} | base64 --decode
 ```
@@ -43,7 +43,7 @@ kubectl get secret bluesky-pds-secret --template={{.data.adminPassword}} | base6
 ### Create your account
 
 A. Create you account in the Bluesky UI
-1. Navigate to https://bsky.app/ > Create Account
+1. Navigate to https://bsky.app/ > **Create Account**
 2. On the first step, specify the PDS hostname (By default, this is set to "Bluesky Social")
 3. Input your invite code generated along with the new account information
 4. Follow any additional prompts
