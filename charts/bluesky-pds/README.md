@@ -25,7 +25,7 @@ helm install bluesky-pds bear/bluesky-pds \
 
 Also refer to the [official PDS docs](https://github.com/bluesky-social/pds/blob/main/README.md).
 
-### Generate invite code via API POST request to your PDS
+### Generate an invite code via API request to your PDS
 ```bash
 export PDS_HOSTNAME=pds.example.com
 
@@ -43,7 +43,7 @@ kubectl get secret bluesky-pds-secret --template={{.data.adminPassword}} | base6
 ### Create your account
 
 A. Create you account in the Bluesky UI
-1. Go to https://bsky.app/ > Create Account
+1. Navigate to https://bsky.app/ > Create Account
 2. On the first step, specify the PDS hostname (By default, this is set to "Bluesky Social")
 3. Input your invite code generated along with the new account information
 4. Follow any additional prompts
