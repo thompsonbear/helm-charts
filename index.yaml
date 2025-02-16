@@ -3,6 +3,16 @@ entries:
   bluesky-pds:
   - apiVersion: v2
     appVersion: 0.4.74
+    created: "2025-02-16T23:27:17.375402679Z"
+    description: A Helm chart for Bluesky PDS
+    digest: 7beea9c09c41bbddbfd2e9f1940e4fa75bc6b33320bfe196b51137fb37c3a05c
+    name: bluesky-pds
+    type: application
+    urls:
+    - https://github.com/thompsonbear/helm-charts/releases/download/bluesky-pds-0.2.0/bluesky-pds-0.2.0.tgz
+    version: 0.2.0
+  - apiVersion: v2
+    appVersion: 0.4.74
     created: "2025-02-16T17:31:35.427043009Z"
     description: A Helm chart for Bluesky PDS
     digest: 5e076efb305f5f34e186a8c70321658cf964be3b1d434ca08aa46160628993c9
@@ -71,4 +81,4 @@ entries:
     urls:
     - https://github.com/thompsonbear/helm-charts/releases/download/bluesky-pds-0.1.0/bluesky-pds-0.1.0.tgz
     version: 0.1.0
-generated: "2025-02-16T17:31:35.427076752Z"
+generated: "2025-02-16T23:27:17.375429489Z"
