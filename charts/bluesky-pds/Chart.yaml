@@ -1,6 +1,6 @@
 apiVersion: v2
 name: bluesky-pds
-description: A Helm chart to host a Bluesky PDS
+description: A Helm chart for Bluesky PDS
 
 # A chart can be either an 'application' or a 'library' chart.
 #
