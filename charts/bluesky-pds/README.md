@@ -3,7 +3,7 @@
 
 A Helm chart to deploy a [Bluesky PDS](https://github.com/bluesky-social/pds) on Kubernetes.
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.74](https://img.shields.io/badge/AppVersion-0.4.74-informational?style=flat-square) 
+![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.98](https://img.shields.io/badge/AppVersion-0.4.98-informational?style=flat-square) 
 
 ## Installing
 
