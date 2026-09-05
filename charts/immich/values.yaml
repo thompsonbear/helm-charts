@@ -1,0 +1,73 @@
+# https://docs.immich.app/install/environment-variables#general
+immich:
+  environment: "production"
+  log:
+    level: "log"
+    format: "console" # or "json"
+    color: true
+  allowSetup: true
+  processInvalidImages: false
+  ignoreMountCheckErrors: false
+  trustedProxies: []
+workers:
+  image:
+    repository: ghcr.io/immich-app/immich-server
+    pullPolicy: IfNotPresent
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 2283
+  metrics:
+    enabled: false
+    service:
+      type: ClusterIP
+      port: 8081
+  api:
+    replicas: 1
+  microservices:
+    replicas: 1
+
+persistence:
+  size: 10Gi
+  storageClass: ""
+  accessMode: ReadWriteMany
+
+machineLearning:
+  replicas: 1
+  image:
+    repository: ghcr.io/immich-app/immich-machine-learning
+    pullPolicy: IfNotPresent
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 3003
+  # For caching of ML models
+  cache:
+    persistence:
+      type: emptyDir
+      # Optional: to avoid downloading the ML models on every start, replace `type: emptyDir` above with:
+      #   type: persistentVolumeClaim
+      #   size: 10Gi
+      #   accessMode: ReadWriteMany
+      #   # storageClass: your-class
+
+# https://docs.immich.app/install/environment-variables#database
+database:
+  url: ""
+  hostname: "database"
+  name: "immich" # database name
+  port: 5432
+  username: "postgres"
+  password: "postgres"
+  ssl: false
+  storageType: "SSD" # or HDD
+
+# https://docs.immich.app/install/environment-variables#redis
+redis:
+  url: ""
+  socket: ""
+  hostname: "redis"
+  port: 6379
+  username: ""
+  password: ""
+  index: 0

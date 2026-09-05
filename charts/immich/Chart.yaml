@@ -1,0 +1,9 @@
+apiVersion: v2
+name: immich
+description: A helm chart for hosting immich with seperated api and microservices roles
+
+type: application
+
+version: 0.1.0
+
+appVersion: "v3.0.0"
