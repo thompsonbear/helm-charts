@@ -1,9 +1,20 @@
 apiVersion: v2
 name: immich
-description: A helm chart for hosting immich with seperated api and microservices roles
+description: A Helm chart for Immich with separate API and microservices roles
+home: https://immich.app
+icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
+keywords:
+  - immich
+  - photo-management
+  - photo-backup
+  - self-hosted
+  - video-management
+sources:
+  - https://github.com/thompsonbear/helm-charts/charts/immich
+  - https://github.com/immich-app/immich
 
 type: application
 
 version: 0.1.0
 
-appVersion: "v3.0.0"
+appVersion: "v3.1.0"

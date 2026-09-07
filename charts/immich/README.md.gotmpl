@@ -1,0 +1,59 @@
+{{ template "chart.header" . }}
+
+A Helm chart for Immich with separate API and microservices worker deployments.
+PostgreSQL and Redis are external dependencies and are not installed by this
+chart. The API, microservices, and machine-learning workloads are deployed by
+the chart; Ingress and HTTPRoute support is disabled by default.
+
+{{ template "chart.versionBadge" . }}{{ template "chart.typeBadge" . }}{{ template "chart.appVersionBadge" . }}
+
+## Installing
+
+Add the Bear chart repository and install the chart with a values file that
+points at the existing PostgreSQL and Redis services:
+
+```bash
+helm repo add bear https://charts.bear.fyi
+helm repo update
+helm upgrade --install immich bear/immich \
+  --namespace immich \
+  --create-namespace \
+  --values values.yaml
+```
+
+The default `database.secretType: url` reads a complete PostgreSQL connection
+URL from the `jdbc-uri` key of the `immich-database` Secret. Create that Secret
+in the release namespace before installing. To use individual database
+connection fields instead, set `database.secretType: basic`; the chart then
+reads only the password from `database.passwordKey`. Leave `database.urlKey`
+unchanged—it is ignored in `basic` mode.
+
+```bash
+kubectl create namespace immich
+kubectl -n immich create secret generic immich-database \
+  --from-literal=jdbc-uri='postgresql://immich:password@postgres.example:5432/immich'
+```
+
+## Configuration
+
+`server.persistence` is mounted by both the API and microservices pods and
+therefore must support the configured shared access mode (default:
+`ReadWriteMany`). To use a pre-existing claim, set
+`server.persistence.existingClaim`.
+
+Horizontal Pod Autoscalers are disabled by default. Enable the relevant
+`autoscaling.enabled` value and set CPU requests under that workload's
+`resources` to use CPU utilization scaling. The machine-learning Service is
+available at `<release>-immich-machine-learning:3003`; configure it in Immich's
+machine-learning system settings when using this in-cluster workload.
+
+External exposure is disabled by default. Set either `ingress.enabled` with at
+least one `ingress.hosts` entry, or `httpRoute.enabled` with Gateway API
+`httpRoute.parentRefs`. Both options route only to the API Service and cannot
+be enabled together.
+
+{{ template "chart.requirementsSection" . }}
+
+{{ template "chart.valuesSection" . }}
+
+{{ template "helm-docs.versionFooter" . }}
