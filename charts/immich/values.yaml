@@ -52,67 +52,12 @@ server:
       targetCPUUtilizationPercentage: 80
       targetMemoryUtilizationPercentage: ""
       behavior: {}
-  # Both server roles must see the same media files.
   persistence:
     enabled: true
     existingClaim: ""
     size: 10Gi
+    # storageClass/pvc must support RWX/ReadWriteMany access mode
     storageClass: ""
-    accessModes: [ReadWriteMany]
-    mountPath: /data
-
-# Expose only the API Service. At most one of ingress or httpRoute can be
-# enabled for a release.
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts: []
-  tls: []
-
-httpRoute:
-  enabled: false
-  annotations: {}
-  # Gateway API parentRefs, for example:
-  # - name: public-gateway
-  #   namespace: gateway-system
-  #   sectionName: https
-  parentRefs: []
-  # Empty accepts all hostnames attached to the selected Gateway listener.
-  hostnames: []
-  # Requests are forwarded to the API Service. Override the default match when
-  # a more specific Gateway API route is required.
-  rules:
-    - matches:
-        - path:
-            type: PathPrefix
-            value: /
-
-# An already-running PostgreSQL instance. Credentials are read from an existing
-# Secret; secretType selects whether it contains a complete URL or a password.
-database:
-  host: postgresql.default.svc.cluster.local
-  port: 5432
-  name: immich
-  username: immich
-  existingSecret: immich-database
-  # -- Secret content format: url reads DB_URL from urlKey; basic reads the
-  # password from passwordKey and uses the individual connection fields.
-  secretType: url
-  passwordKey: password
-  urlKey: uri
-  sslMode: ""
-  # Empty enables Immich's extension auto-detection.
-  vectorExtension: ""
-
-# An already-running Redis instance. Its password is optional.
-redis:
-  host: redis.default.svc.cluster.local
-  port: 6379
-  username: ""
-  database: 0
-  existingSecret: ""
-  passwordKey: password
 
 machineLearning:
   enabled: true
@@ -126,6 +71,39 @@ machineLearning:
     type: ClusterIP
     port: 3003
     annotations: {}
+  config: {}
+    # # https://docs.immich.app/install/environment-variables#machine-learning
+    # models:
+    #   ttl: 300
+    #   ttlPollS: 10
+    #   interOpThreads: 1
+    #   intraOpThreads: 2
+    #   clip:
+    #     textual: ""
+    #     visual: ""
+    #   facial:
+    #     recognition: ""
+    #     detection: ""
+    #     maxBatchSize: ~
+    #   ocr:
+    #     recognition: ""
+    #     detection: ""
+    #     maxBatchSize: 6
+    # cacheFolder: "/cache"
+    # requestThreads: ~
+    # workers: 1
+    # httpKeepaliveTimeoutS: 2
+    # workerTimeout: 300
+    # ann:
+    #   enabled: true
+    #   fp16Turbo: false
+    #   tuningLevel: 2
+    # deviceIds: 0
+    # rknn:
+    #   enabled: true
+    #   threads: 1
+    # modelArena: true
+    # openvinoPrecision: "FP32"
   resources: {}
   nodeSelector: {}
   tolerations: []
@@ -145,3 +123,23 @@ machineLearning:
     size: 10Gi
     storageClass: ""
     accessModes: [ReadWriteOnce]
+
+# ingress for the API Service. At most one of ingress or httpRoute can be
+# enabled for a release.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs: []
+  hostnames: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /

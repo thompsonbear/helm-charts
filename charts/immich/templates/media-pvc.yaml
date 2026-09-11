@@ -7,7 +7,7 @@ metadata:
     {{- include "immich.labels" . | nindent 4 }}
 spec:
   accessModes:
-    {{- toYaml .Values.server.persistence.accessModes | nindent 4 }}
+    - ReadWriteMany
   resources:
     requests:
       storage: {{ .Values.server.persistence.size }}

@@ -58,7 +58,7 @@ spec:
           {{- if $.Values.server.persistence.enabled }}
           volumeMounts:
             - name: media
-              mountPath: {{ $.Values.server.persistence.mountPath }}
+              mountPath: "/data"
           {{- end }}
           resources:
             {{- toYaml $config.resources | nindent 12 }}
