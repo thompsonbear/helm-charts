@@ -100,7 +100,7 @@ database:
   # password from passwordKey and uses the individual connection fields.
   secretType: url
   passwordKey: password
-  urlKey: jdbc-uri
+  urlKey: uri
   sslMode: ""
   # Empty enables Immich's extension auto-detection.
   vectorExtension: ""
