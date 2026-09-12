@@ -1,5 +1,3 @@
-# PostgreSQL and Redis are external dependencies; this chart deliberately does
-# not create either service.
 nameOverride: ""
 fullnameOverride: ""
 imagePullSecrets: []
@@ -17,11 +15,28 @@ server:
     pullPolicy: IfNotPresent
     # Defaults to Chart.appVersion when empty.
     tag: ""
-  timezone: Etc/UTC
-  logLevel: log
-  trustedProxies: []
-  # Additional environment variables for both server deployments.
-  extraEnv: []
+
+  # Both an external redis and postgres database configuration must be specified
+  # https://docs.immich.app/install/environment-variables
+  env: []
+  # - name: TZ
+  #   value: *1
+  # - name: IMMICH_ENV
+  #   value: "production"
+  # - name: IMMICH_TRUSTED_PROXIES
+  #   value: []
+  # - name: DB_URL
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: postgres-immich-app
+  #       key: "uri"
+  # - name: DB_STORAGE_TYPE
+  #   value: "SSD" #, "HDD"
+  # - name: REDIS_URL
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: valkey-immich-app
+  #       key: "ioredis_uri"
   api:
     replicaCount: 1
     service:
@@ -52,6 +67,8 @@ server:
       targetCPUUtilizationPercentage: 80
       targetMemoryUtilizationPercentage: ""
       behavior: {}
+
+  # Data persistence for immich media
   persistence:
     enabled: true
     existingClaim: ""
@@ -71,39 +88,14 @@ machineLearning:
     type: ClusterIP
     port: 3003
     annotations: {}
-  config: {}
-    # # https://docs.immich.app/install/environment-variables#machine-learning
-    # models:
-    #   ttl: 300
-    #   ttlPollS: 10
-    #   interOpThreads: 1
-    #   intraOpThreads: 2
-    #   clip:
-    #     textual: ""
-    #     visual: ""
-    #   facial:
-    #     recognition: ""
-    #     detection: ""
-    #     maxBatchSize: ~
-    #   ocr:
-    #     recognition: ""
-    #     detection: ""
-    #     maxBatchSize: 6
-    # cacheFolder: "/cache"
-    # requestThreads: ~
-    # workers: 1
-    # httpKeepaliveTimeoutS: 2
-    # workerTimeout: 300
-    # ann:
-    #   enabled: true
-    #   fp16Turbo: false
-    #   tuningLevel: 2
-    # deviceIds: 0
-    # rknn:
-    #   enabled: true
-    #   threads: 1
-    # modelArena: true
-    # openvinoPrecision: "FP32"
+  # https://docs.immich.app/install/environment-variables#machine-learning
+  env: []
+  # - name: MACHINE_LEARNING_WORKERS
+  #   value: 1
+  # - name: MACHINE_LEARNING_DEVICE_IDS
+  #   value: 0
+  # - name: MACHINE_LEARNING_HTTP_KEEPALIVE_TIMEOUT_S
+  #   value: 2
   resources: {}
   nodeSelector: {}
   tolerations: []

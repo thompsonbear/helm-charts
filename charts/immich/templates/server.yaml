@@ -40,9 +40,16 @@ spec:
           image: {{ include "immich.serverImage" $ | quote }}
           imagePullPolicy: {{ $.Values.server.image.pullPolicy }}
           env:
-            {{- include "immich.serverEnv" $ | nindent 12 }}
-            - name: IMMICH_WORKERS_{{ if eq $role "api" }}INCLUDE{{ else }}EXCLUDE{{ end }}
-              value: api
+            {{- with .Values.server.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if eq $role "api" }}
+            - name: IMMICH_WORKERS_INCLUDE
+              value: "api"
+            {{ else }}
+            - name: IMMICH_WORKERS_EXCLUDE
+              value: "api"
+            {{- end }}
           {{- if eq $role "api" }}
           ports:
             - name: http
