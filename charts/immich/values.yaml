@@ -1,0 +1,137 @@
+nameOverride: ""
+fullnameOverride: ""
+imagePullSecrets: []
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+podAnnotations: {}
+podLabels: {}
+
+server:
+  # Settings shared by the API and microservices server deployments.
+  image:
+    repository: ghcr.io/immich-app/immich-server
+    pullPolicy: IfNotPresent
+    # Defaults to Chart.appVersion when empty.
+    tag: ""
+
+  # Both an external redis and postgres database configuration must be specified
+  # https://docs.immich.app/install/environment-variables
+  env: []
+  # - name: TZ
+  #   value: *1
+  # - name: IMMICH_ENV
+  #   value: "production"
+  # - name: IMMICH_TRUSTED_PROXIES
+  #   value: []
+  # - name: DB_URL
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: postgres-immich-app
+  #       key: "uri"
+  # - name: DB_STORAGE_TYPE
+  #   value: "SSD" #, "HDD"
+  # - name: REDIS_URL
+  #   valueFrom:
+  #     secretKeyRef:
+  #       name: valkey-immich-app
+  #       key: "ioredis_uri"
+  api:
+    replicaCount: 1
+    service:
+      type: ClusterIP
+      port: 2283
+      annotations: {}
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 80
+      targetMemoryUtilizationPercentage: ""
+      behavior: {}
+  microservices:
+    replicaCount: 1
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    autoscaling:
+      enabled: false
+      minReplicas: 1
+      maxReplicas: 3
+      targetCPUUtilizationPercentage: 80
+      targetMemoryUtilizationPercentage: ""
+      behavior: {}
+
+  # Data persistence for immich media
+  persistence:
+    enabled: true
+    existingClaim: ""
+    size: 10Gi
+    # storageClass/pvc must support RWX/ReadWriteMany access mode
+    storageClass: ""
+
+machineLearning:
+  enabled: true
+  replicaCount: 1
+  image:
+    repository: ghcr.io/immich-app/immich-machine-learning
+    pullPolicy: IfNotPresent
+    # Defaults to Chart.appVersion when empty.
+    tag: ""
+  service:
+    type: ClusterIP
+    port: 3003
+    annotations: {}
+  # https://docs.immich.app/install/environment-variables#machine-learning
+  env: []
+  # - name: MACHINE_LEARNING_WORKERS
+  #   value: 1
+  # - name: MACHINE_LEARNING_DEVICE_IDS
+  #   value: 0
+  # - name: MACHINE_LEARNING_HTTP_KEEPALIVE_TIMEOUT_S
+  #   value: 2
+  resources: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  extraEnv: []
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 80
+    targetMemoryUtilizationPercentage: ""
+    behavior: {}
+  modelCache:
+    # emptyDir or persistentVolumeClaim
+    type: emptyDir
+    existingClaim: ""
+    size: 10Gi
+    storageClass: ""
+    accessModes: [ReadWriteOnce]
+
+# ingress for the API Service. At most one of ingress or httpRoute can be
+# enabled for a release.
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+  hosts: []
+  tls: []
+
+httpRoute:
+  enabled: false
+  annotations: {}
+  parentRefs: []
+  hostnames: []
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
