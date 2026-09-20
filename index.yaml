@@ -111,4 +111,26 @@ entries:
     urls:
     - https://github.com/thompsonbear/helm-charts/releases/download/bluesky-pds-0.1.0/bluesky-pds-0.1.0.tgz
     version: 0.1.0
-generated: "2026-04-12T23:04:29.608405355Z"
+  immich:
+  - apiVersion: v2
+    appVersion: v3.1.0
+    created: "2026-09-20T20:20:32.738102835Z"
+    description: A Helm chart for Immich with separate API and microservices roles
+    digest: 63f817cfcac7f4371a3c3d64c988583f1b80b8602942a9866075ea6e1b9cb016
+    home: https://immich.app
+    icon: https://raw.githubusercontent.com/immich-app/immich/main/design/immich-logo.svg
+    keywords:
+    - immich
+    - photo-management
+    - photo-backup
+    - self-hosted
+    - video-management
+    name: immich
+    sources:
+    - https://github.com/thompsonbear/helm-charts/charts/immich
+    - https://github.com/immich-app/immich
+    type: application
+    urls:
+    - https://github.com/thompsonbear/helm-charts/releases/download/immich-0.1.0/immich-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-09-20T20:20:32.738128703Z"
