@@ -40,7 +40,7 @@ spec:
           image: {{ include "immich.serverImage" $ | quote }}
           imagePullPolicy: {{ $.Values.server.image.pullPolicy }}
           env:
-            {{- with .Values.server.env }}
+            {{- with $.Values.server.env }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
             {{- if eq $role "api" }}
