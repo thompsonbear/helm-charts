@@ -21,20 +21,9 @@ helm upgrade --install immich bear/immich \
   --values values.yaml
 ```
 
-The default `database.secretType: url` reads a complete PostgreSQL connection
-URL from the `jdbc-uri` key of the `immich-database` Secret. Create that Secret
-in the release namespace before installing. To use individual database
-connection fields instead, set `database.secretType: basic`; the chart then
-reads only the password from `database.passwordKey`. Leave `database.urlKey`
-unchanged—it is ignored in `basic` mode.
-
-```bash
-kubectl create namespace immich
-kubectl -n immich create secret generic immich-database \
-  --from-literal=jdbc-uri='postgresql://immich:password@postgres.example:5432/immich'
-```
-
 ## Configuration
+
+Environment variables must be set on the server components to configure the PostgreSQL and Redis/Valkey connections per the [documentation](https://docs.immich.app/install/environment-variables#database) before installation will succeed.
 
 `server.persistence` is mounted by both the API and microservices pods and
 therefore must support the configured shared access mode (default:

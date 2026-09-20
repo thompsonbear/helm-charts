@@ -5,7 +5,7 @@ PostgreSQL and Redis are external dependencies and are not installed by this
 chart. The API, microservices, and machine-learning workloads are deployed by
 the chart; Ingress and HTTPRoute support is disabled by default.
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.1.0](https://img.shields.io/badge/AppVersion-v3.1.0-informational?style=flat-square)
+![Version: 0.1.1](https://img.shields.io/badge/Version-0.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v3.1.0](https://img.shields.io/badge/AppVersion-v3.1.0-informational?style=flat-square)
 
 ## Installing
 
@@ -21,20 +21,9 @@ helm upgrade --install immich bear/immich \
   --values values.yaml
 ```
 
-The default `database.secretType: url` reads a complete PostgreSQL connection
-URL from the `jdbc-uri` key of the `immich-database` Secret. Create that Secret
-in the release namespace before installing. To use individual database
-connection fields instead, set `database.secretType: basic`; the chart then
-reads only the password from `database.passwordKey`. Leave `database.urlKey`
-unchanged—it is ignored in `basic` mode.
-
-```bash
-kubectl create namespace immich
-kubectl -n immich create secret generic immich-database \
-  --from-literal=jdbc-uri='postgresql://immich:password@postgres.example:5432/immich'
-```
-
 ## Configuration
+
+Environment variables must be set on the server components to configure the PostgreSQL and Redis/Valkey connections per the [documentation](https://docs.immich.app/install/environment-variables#database) before installation will succeed.
 
 `server.persistence` is mounted by both the API and microservices pods and
 therefore must support the configured shared access mode (default:
@@ -56,16 +45,6 @@ be enabled together.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| database.existingSecret | string | `"immich-database"` |  |
-| database.host | string | `"postgresql.default.svc.cluster.local"` |  |
-| database.name | string | `"immich"` |  |
-| database.passwordKey | string | `"password"` |  |
-| database.port | int | `5432` |  |
-| database.secretType | string | `"url"` | Secret content format: url reads DB_URL from urlKey; basic reads the password from passwordKey and uses the individual connection fields. |
-| database.sslMode | string | `""` |  |
-| database.urlKey | string | `"jdbc-uri"` |  |
-| database.username | string | `"immich"` |  |
-| database.vectorExtension | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | httpRoute.annotations | object | `{}` |  |
 | httpRoute.enabled | bool | `false` |  |
@@ -87,6 +66,7 @@ be enabled together.
 | machineLearning.autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | machineLearning.autoscaling.targetMemoryUtilizationPercentage | string | `""` |  |
 | machineLearning.enabled | bool | `true` |  |
+| machineLearning.env | list | `[]` |  |
 | machineLearning.extraEnv | list | `[]` |  |
 | machineLearning.image.pullPolicy | string | `"IfNotPresent"` |  |
 | machineLearning.image.repository | string | `"ghcr.io/immich-app/immich-machine-learning"` |  |
@@ -106,12 +86,6 @@ be enabled together.
 | nameOverride | string | `""` |  |
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
-| redis.database | int | `0` |  |
-| redis.existingSecret | string | `""` |  |
-| redis.host | string | `"redis.default.svc.cluster.local"` |  |
-| redis.passwordKey | string | `"password"` |  |
-| redis.port | int | `6379` |  |
-| redis.username | string | `""` |  |
 | server.api.affinity | object | `{}` |  |
 | server.api.autoscaling.behavior | object | `{}` |  |
 | server.api.autoscaling.enabled | bool | `false` |  |
@@ -126,11 +100,10 @@ be enabled together.
 | server.api.service.port | int | `2283` |  |
 | server.api.service.type | string | `"ClusterIP"` |  |
 | server.api.tolerations | list | `[]` |  |
-| server.extraEnv | list | `[]` |  |
+| server.env | list | `[]` |  |
 | server.image.pullPolicy | string | `"IfNotPresent"` |  |
 | server.image.repository | string | `"ghcr.io/immich-app/immich-server"` |  |
 | server.image.tag | string | `""` |  |
-| server.logLevel | string | `"log"` |  |
 | server.microservices.affinity | object | `{}` |  |
 | server.microservices.autoscaling.behavior | object | `{}` |  |
 | server.microservices.autoscaling.enabled | bool | `false` |  |
@@ -142,14 +115,10 @@ be enabled together.
 | server.microservices.replicaCount | int | `1` |  |
 | server.microservices.resources | object | `{}` |  |
 | server.microservices.tolerations | list | `[]` |  |
-| server.persistence.accessModes[0] | string | `"ReadWriteMany"` |  |
 | server.persistence.enabled | bool | `true` |  |
 | server.persistence.existingClaim | string | `""` |  |
-| server.persistence.mountPath | string | `"/data"` |  |
 | server.persistence.size | string | `"10Gi"` |  |
 | server.persistence.storageClass | string | `""` |  |
-| server.timezone | string | `"Etc/UTC"` |  |
-| server.trustedProxies | list | `[]` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
